@@ -40,12 +40,7 @@ export class AuthService {
       return this.result;
     }
     try {
-      const payload = await this.jwtService.verifyAsync(
-        token,
-        {
-          secret: jwtConstants.secret
-        }
-      );
+      const payload = await this.jwtService.verifyAsync(token);
       this.result=true;
 
     } catch (error) {
