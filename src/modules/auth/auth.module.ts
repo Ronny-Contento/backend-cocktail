@@ -4,13 +4,18 @@ import { AuthController } from './auth.controller';
 import { StaffModule } from '../staff/staff.module';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './common/constants/constant';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports:[StaffModule, JwtModule.register({
+  imports:[ConfigModule.forRoot({
+    envFilePath: '.env',  
+    isGlobal: true,
+  }
+  ), StaffModule, JwtModule.register({
     global: true,
-    secret: process.env.JWT_SECRET,
-    signOptions: { expiresIn: process.env.EXPRIRESIN},
-  }),],
+    secret: `${process.env.JWT_SECRET}`,
+    signOptions: { expiresIn: '12h'},
+  })],
   controllers: [AuthController],
   providers: [AuthService],
 })

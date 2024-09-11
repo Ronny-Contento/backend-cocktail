@@ -4,7 +4,6 @@ import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { LoginResponse } from './interface/login-response';
 import { jwtConstants } from './common/constants/constant';
-import { request } from 'http';
 
 @Injectable()
 export class AuthService {
@@ -17,12 +16,17 @@ export class AuthService {
 
   async signIn(email: String, password: String):Promise<LoginResponse> {
     const staff = await this.staffService.findEmail(email);
-
-    const isMatch = await bcrypt.compare(password, staff?.password);
-
-    if (!isMatch) {
+    if(!staff){
       throw new UnauthorizedException("please, check your credentials");
+
+    }else{
+      const isMatch = await bcrypt.compare(password, staff?.password);
+      if (!isMatch) {
+        throw new UnauthorizedException("please, check your credentials");
+      }
     }
+
+   
 
     const payload = { sub: staff.idStaff, email: staff.email };
     const access_token= await this.jwtService.signAsync(payload);
@@ -31,7 +35,6 @@ export class AuthService {
   }
 
   async validateToken(token:string):Promise<boolean>{
-    console.log("validando...token",token);
     
     if(!token){
       return this.result;
@@ -70,4 +73,5 @@ export class AuthService {
    }
   return this.userToken;
  }
+
 }

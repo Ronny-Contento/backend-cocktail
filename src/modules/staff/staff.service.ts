@@ -22,17 +22,11 @@ export class StaffService {
     const hashPassword = await this.hashPassword(createStaffDto.password);
 
     createStaffDto.password = hashPassword;
+    console.log(createStaffDto);
 
     const staff = this.staffRepository.create(createStaffDto);
-    try {
-      return await this.staffRepository.save(staff);
-    } catch (error) {
-      if (error.code == 'ER_DUP_ENTRY') {
-        throw new ConflictException('This email is already registered');
-      }
-
-      throw new InternalServerErrorException();
-    }
+    return await this.staffRepository.save(staff);
+  
   }
 
   async hashPassword(password: String) {

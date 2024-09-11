@@ -33,11 +33,9 @@ export class StaffController {
   @Patch(':id')
   @UseInterceptors(FileInterceptor('file', multerOptions))
   async update(@Param('id') id: string, @Body() updateStaffDto: any, @UploadedFile() file:Express.Multer.File) {
-    /* const updateStaffData = JSON.parse(JSON.stringify(updateStaffDto)); */
-     /*const formData = new FormData();
-    formData.append('staff', JSON.stringify(updateStaffData)); */
-    
+      
     const updateStaff = JSON.parse(updateStaffDto.staff);
+    console.log(updateStaff);
     if(file){
       const urlImg=await cloudinary.uploader.upload(file.path);
       updateStaff.photo=urlImg.secure_url;
