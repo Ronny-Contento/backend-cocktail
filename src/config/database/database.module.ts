@@ -15,7 +15,7 @@ import { StaffEntity } from 'src/modules/staff/entities/staff.entity';
         password: configService.get('POSTGRES_PASSWORD'),
         database: configService.get('POSTGRES_NAME'),
         entities: [StaffEntity],
-        synchronize: false,
+        synchronize: true,
         ssl: configService.get('POSTGRES_SSL') === 'true',
         extra: {
           ssl:
