@@ -16,6 +16,15 @@ import { StaffEntity } from 'src/modules/staff/entities/staff.entity';
         database: configService.get('POSTGRES_NAME'),
         entities: [StaffEntity],
         synchronize: false,
+        ssl: configService.get('POSTGRES_SSL') === 'true',
+        extra: {
+          ssl:
+            configService.get('POSTGRES_SSL') === 'true'
+              ? {
+                  rejectUnauthorized: false,
+                }
+              : null,
+        },
       }),
       inject: [ConfigService],
     }),
